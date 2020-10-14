@@ -15,7 +15,7 @@
       </div>
     </el-card>
      <el-card shadow="hover" body-style="height:363px" style="margin-top:10px">
-    <el-table :data='tableDatas'>
+    <el-table :data='tableData'>
       <el-table-column v-for="(val,key) in tablelabel" :key='key' :prop='key' :label="val"></el-table-column>
     </el-table>
     </el-card>
@@ -34,10 +34,10 @@
  <echar style="height:280px" :chartdata="echartdata.order"></echar>
     </el-card>
     <div class="graph"> <el-card shadow="hover">
-     
+     <echar style="height:220px;width: 100%;" :chartdata='echartdata.user'></echar>
     </el-card>
      <el-card shadow="hover">
-      
+       <echar style="height:220px;width: 100%;" :chartdata='echartdata.video'></echar>
     </el-card></div>
      </el-col>
   </el-row>
@@ -55,37 +55,37 @@ import echar from '../../components/echar'
        urlimg:require('../../assets/imgs/3.png'),
         countData:[
           {
-            name:'字符订单',
+            name:'未完成订单',
             value:1234,
             icon:'zoom-out',
             color:'#2ec7c9'
           },
            {
-            name:'字符订单',
+            name:'退回订单',
             value:1456,
             icon:'question',
             color:'#2ec7c9'
           },
            {
-            name:'字符订单',
+            name:'支付订单',
             value:2876,
             icon:'picture-outline-round',
             color:'#2ec7c9'
           },
            {
-            name:'字符订单',
+            name:'未支付订单',
             value:376,
             icon:'s-cooperation',
             color:'#2ec7c9'
           },
            {
-            name:'字符订单',
+            name:'我的订单',
             value:3398,
             icon:'star-off',
             color:'#ffb980'
           },
            {
-            name:'字符订单',
+            name:'剩余订单',
             value:3763,
             icon:'eleme',
             color:'#5ablef'
@@ -94,10 +94,10 @@ import echar from '../../components/echar'
 
         tableData:[],
         tablelabel:{
-          name:'课程',
-          todaybuy:'今日购买',
-          mouthbuy:'本月购买',
-          totslbuy:'总购买'
+         name: '课程',
+					todayBuy: '今日购买',
+					monthBuy: '本月购买',
+					totalBuy: '总购买',
         },
         //请求的数据无法请求到只能写死
          tableDatas: [{
@@ -133,48 +133,8 @@ import echar from '../../components/echar'
         echartdata:{
           //三个图表
           order:{
-            xData:['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-            series:[{
-            name: '邮件营销',
-            type: 'line',
-            stack: '总量',
-            areaStyle: {},
-            data: [120, 132, 101, 134, 90, 230, 210]
-        },
-        {
-            name: '联盟广告',
-            type: 'line',
-            stack: '总量',
-            areaStyle: {},
-            data: [220, 182, 191, 234, 290, 330, 310]
-        },
-        {
-            name: '视频广告',
-            type: 'line',
-            stack: '总量',
-            areaStyle: {},
-            data: [150, 232, 201, 154, 190, 330, 410]
-        },
-        {
-            name: '直接访问',
-            type: 'line',
-            stack: '总量',
-            areaStyle: {},
-            data: [320, 332, 301, 334, 390, 330, 320]
-        },
-        {
-            name: '搜索引擎',
-            type: 'line',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'top'
-                }
-            },
-            areaStyle: {},
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
-        }]
+            xData:[],
+            series:[]
           },
           user:{xData:[],
             series:[]},
@@ -194,9 +154,9 @@ import echar from '../../components/echar'
          this.$http('/home/getData').then(res=>{
            res=res.data
            //左侧下边，购买量数据
-           this.tableData=res.data.tableData
+          this.tableData=res.data.tableData
            //订单折线图数据
-          /* const order=res.data.orderData
+           const order=res.data.orderData
            this.echartdata.order.xData=order.date
            //取出series中name部分键值
            let keyarray=Object.keys(order.data[0])
@@ -207,7 +167,28 @@ import echar from '../../components/echar'
                type:'line',
 
              })
-           })*/
+           })
+           //学员柱状图
+						const user = res.data.userData;
+						let keys2 = user.map(item => item.date);
+						this.echartdata.user.xData = keys2;
+						this.echartdata.user.series.push({
+							type: 'bar',
+							data: user.map(item => item.new),
+							name: '新增用户'
+						}, {
+							type: 'bar',
+							data: user.map(item => item.active),
+							name: '活跃用户',
+							barGap:0
+						});
+						//饼状图
+						const video = res.data.videoData;
+						this.echartdata.video.series.push({
+							type: 'pie',
+							data: video,
+							name: '视频占比'
+						});
         console.log(res.data)
       })
       }
