@@ -53,10 +53,13 @@
       }
     },
     methods:{
-      handleEdit(){
+      handleEdit(row){
+        this.$emit('edit',row)
 
       },
-      handleDelete(){}
+      handleDelete(row){
+        this.$emit('del',row)
+      }
 
     },
     changes(page){

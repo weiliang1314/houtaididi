@@ -45,7 +45,7 @@
            {
             path:'/video',
             name:'videos',
-            label:'视频管理',
+            label:'图片管理',
             icon:'video-play'
           },
            {

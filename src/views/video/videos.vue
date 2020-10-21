@@ -1,12 +1,16 @@
 <template>
   <div>
-dsdewd
+<videotu></videotu>
   </div>
 </template>
 
 <script>
+import videotu from '../../components/videotu';
   export default {
-    name:'videos'
+     name:'videos',
+    components:{
+    videotu
+    }
   }
 </script>
 
