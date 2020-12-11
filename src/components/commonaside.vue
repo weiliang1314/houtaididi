@@ -79,15 +79,20 @@
     },
     computed:{
       nochildren(){
-        return this.asidemenu.filter(item=>!item.children);
+        //return this.asidemenu.filter(item=>!item.children);
+         return this.menu.filter(item=>!item.children);
 
       },
       haschildren(){
-        return this.asidemenu.filter(item=>item.children);
+        //return this.asidemenu.filter(item=>item.children);
+         return this.menu.filter(item=>item.children);
       },
       //收回侧边栏的文字菜单，获取vuex中布尔值，执行ui组件中的自定义事件（目前不起作用）
       iscollages(){
         return this.$store.state.tab.iscollage
+      },
+      menu(){
+        return this.$store.state.tab.menu
       }
     },
     methods:{

@@ -16,7 +16,7 @@
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item icon="">个人中心</el-dropdown-item>
-        <el-dropdown-item icon="">退出</el-dropdown-item>
+        <el-dropdown-item icon="" @click.native="logout">退出</el-dropdown-item>
         
       </el-dropdown-menu>
     </el-dropdown>
@@ -44,6 +44,11 @@ import {mapState} from 'vuex'
       //点击按钮，执行vuex中的事件，收回侧边栏中的文字菜单（不起作用）
       collapses(){
         this.$store.commit('collapse')
+      },
+      logout(){
+        this.$store.commit('cleartoken');
+        this.$store.commit('clearmenu');
+        location.reload();//重新加载
       }
     }
   }
